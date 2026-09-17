@@ -1,0 +1,7 @@
+interface:
+  display_name: "Gao Feng Research"
+  short_description: "为高风访谈、PPT、企业及IPO动态制作信源型研究包"
+  default_prompt: "Use $gao-feng-research to prepare a source-driven Gao Feng research brief."
+
+policy:
+  allow_implicit_invocation: true
