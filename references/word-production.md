@@ -1,5 +1,9 @@
 # Word Production and Quality Control
 
+## Cross-platform execution
+
+Apply these rules with the current host's document tools. Python 3.10+ and the dependency in `requirements.txt` are sufficient to run the bundled validator; creating and rendering a DOCX also require suitable tools in the host. Use `references/runtime-capabilities.md` for missing execution, rendering, font, or file-creation capabilities. A manual check or Markdown draft must not be described as a fully validated Word document.
+
 ## Document structure
 
 Use a clean source-pack layout. A document may contain a descriptive title and date, followed by question headings or thematic section headings. Under each section, repeat:
@@ -78,9 +82,11 @@ Keep a source headline, its URL, and the beginning of its first bullet on the sa
 
 Run:
 
-```powershell
-python scripts/validate_gao_feng_research.py "D:\path\research.docx"
+```text
+python scripts/validate_gao_feng_research.py /path/to/research.docx
 ```
+
+Run from the skill directory, or use the script's resolved absolute path. Quote paths containing spaces on every operating system.
 
 Fix all reported errors, including any source with fewer than two or more than three evidence bullets. Manually verify that every verbatim quotation is one continuous source span. If it contains multiple sentences, confirm that they are adjacent in the original, appear in unchanged order, and omit no intervening sentence or material. Broader permission may change the allowable quotation length, but it does not permit joining non-contiguous passages.
 

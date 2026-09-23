@@ -1,11 +1,19 @@
 ---
 name: gao-feng-research
-description: Create source-driven Gao Feng research packs for interview preparation, PPT ideation, company or IPO updates, and event-observation research. Use when the user asks for “Gao Feng Research”, “高风research”, “按Gao Feng research规范”, or wants the established title-link-square-bullet Word workflow. Do not use for ordinary narrative reports that do not require this research format.
+description: "Create Gao Feng Research / 高风research source packs for interviews, company/IPO news, PPT ideas, and event observations, using original titles, links, and 2–3 evidence bullets per source."
 ---
 
 # Gao Feng Research
 
 Produce a Gao Feng research pack that can be read directly while preparing an interview, presentation, article, or discussion. The deliverable is a set of well-chosen source blocks with dense original evidence, not an AI-written essay.
+
+## Platform-independent execution
+
+Use this workflow in any agent host that can read instructions. The host supplies search, page retrieval, files, code execution, and document rendering; the skill supplies the research and editorial rules. No particular model, vendor, API key, MCP server, absolute path, or tool name is required by the core instructions.
+
+Read [references/runtime-capabilities.md](references/runtime-capabilities.md) once when first running in a host or when a required capability is missing. Resolve every relative path from this skill's directory. If using the generated single-file edition, its embedded sections replace the corresponding file reads. `agents/openai.yaml` is optional Codex metadata; other hosts can ignore it.
+
+Use available capabilities before choosing the documented fallback. A Markdown draft is permitted when this host cannot produce a real DOCX, but it is not a validated Word deliverable. Never claim live browsing, script execution, font availability, or page inspection that did not happen. The user's instructions take precedence over skill defaults within the host's governing rules.
 
 ## Invocation and loading order
 
@@ -17,14 +25,15 @@ Follow this sequence whenever the skill is selected:
 4. **Always read `references/source-blocks.md` before browsing or extracting quotations.** Use it to build the claim-to-source map, capture candidate source sentences separately, select the permitted consolidation path, de-duplicate evidence, and construct each title-link-bullet block.
 5. **Read `references/word-production.md` only when creating or editing a `.docx`.** If the user only asks for an explanation of the rules or a source plan, do not load the Word-production layer.
 6. **Research and author the content.** Follow the selected mode first, then the universal source-block rules. The user’s explicit instructions override the mode defaults.
-7. **For a Word deliverable, execute `scripts/validate_gao_feng_research.py` after the draft is built.** Execute the script; do not load its implementation into context unless it must be debugged or changed.
-8. **Render and inspect every page, correct defects, then validate again.** Deliver only the latest clean revision.
+7. **For a Word deliverable, execute `scripts/validate_gao_feng_research.py` after the draft is built.** Execute the script; do not load its implementation into context unless it must be debugged or changed. If execution is unavailable, follow the capability fallback and report that validation remains pending.
+8. **Render and inspect every page, correct defects, then validate again.** Deliver only the latest clean revision; if rendering is unavailable, mark the result as awaiting visual review outside the research body.
 
 In compact form:
 
 ```text
 Skill discovery
 → SKILL.md
+→ runtime-capabilities.md on first use or capability gap
 → inspect request and attachments
 → research-modes.md
 → source-blocks.md
@@ -84,7 +93,7 @@ Keep the published headline unchanged. The headline and URL must be plain paragr
 
 ## Word deliverable
 
-Unless the user asks for another format, deliver a `.docx`. Before building or editing it, read [references/word-production.md](references/word-production.md).
+Unless the user asks for another format, deliver a `.docx`. Before building or editing it, read [references/word-production.md](references/word-production.md). If this host cannot create files, follow the explicit Markdown fallback in `runtime-capabilities.md` and provide the completed research content with its outstanding Word-production requirements.
 
 Core formatting:
 
@@ -105,9 +114,9 @@ Core formatting:
 5. Confirm that every retained source now has exactly two or three non-repetitive final bullets. Drop or replace a source that cannot meet the minimum without padding; merge or prioritize if it exceeds the maximum.
 6. Research broadly enough to cover the subject without repetition. Verify every title, URL, date, candidate sentence, cluster, paraphrase, and quotation against the source page.
 7. Write source blocks in the order most useful to the intended Gao Feng research task: normally the newest consequential developments first, followed by the minimum background needed to understand them.
-8. Build or update the Word file. Preserve earlier revisions and create a new version filename for every delivered update.
-9. Run `scripts/validate_gao_feng_research.py <document.docx>`. Fix all errors and review every warning.
-10. Render the final Word file to page images and inspect every page at normal reading size. Rebuild the document if title or URL bullets persist rather than layering more formatting onto damaged paragraphs.
-11. Re-run validation after the last edit. Deliver the final Word file once and state any known content exception precisely.
+8. Build or update the Word file using the host's document tools. Preserve earlier revisions and create a new version filename for every delivered update. Use the documented Markdown fallback only if file creation is unavailable.
+9. Run `python scripts/validate_gao_feng_research.py <document.docx>` from the skill directory (or resolve the script's absolute path). Fix all errors and review every warning. Missing execution capability means pending validation, not a pass.
+10. Render the final Word file to page images and inspect every page at normal reading size. Rebuild the document if title or URL bullets persist rather than layering more formatting onto damaged paragraphs. Report any unavailable visual check.
+11. Re-run validation after the last edit when execution is available. Deliver the final file or clearly identified draft once and state any known content or verification exception precisely.
 
 Automated checks cannot prove that the research is insightful, current, non-repetitive, or responsive to an interview question. Review those qualities manually before delivery.
