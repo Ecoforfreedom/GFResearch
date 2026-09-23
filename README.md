@@ -94,11 +94,11 @@ references/                           模式、信源、Word、运行能力规�
 agents/openai.yaml                    可选 Codex 界面元数据
 adapters/platform-guide.md            平台安装和接入说明
 requirements.txt                      Word 检查器依赖
-scripts/validate_gao_feng_research.py   现有 Word 检查器
-scripts/build_distribution.py          由同一套规范生成分发文件
+scripts/validate_gao_feng_research.py 现有 Word 检查器
+scripts/build_distribution.py         由同一套规范生成分发文件
 dist/                                 两种上传 ZIP、完整单文件指令与校验值
-examples/sample-output.docx            既有格式样张
-tests/test_distribution.py             分发结构与完整性检查
+examples/sample-output.docx           既有格式样张
+tests/test_distribution.py            分发结构与完整性检查
 ```
 
 修改核心或引用规范后重新生成分发文件，避免几个平台的规则不同步：
@@ -110,5 +110,3 @@ python -m unittest discover -s tests
 ```
 
 单文件版自动内嵌核心及全部研究规范，不需要 Agent 再访问仓库读取其他指令。Word 检查器作为可执行文件只在 ZIP 和仓库中提供；单文件版会说明相关能力缺失时如何处理。
-
-平台入口依据官方文档核对于 2026-09-23。链接和具体区别见 [平台接入指南](adapters/platform-guide.md)。
